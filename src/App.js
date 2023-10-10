@@ -1,48 +1,76 @@
-import React, { useState } from 'react'
-
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
+import TimePickerFile from './components/TimePickerFile';
 
 function App() {
-  const [toDos, setToDos] = useState([])
-  const [toDo, setToDo] = useState('')
+  const [toDo, setToDo] = useState({
+    nameForTodo: "",
+    description: ""
+  }
+  );
+
+  const [allToDo, setAllToDo] = useState([]);
+
+  const deleteFunction = (id) => {
+  }
+
+  const insertData = () => {
+    allToDo.push(toDo)
+    setAllToDo(allToDo)
+  }
+
+  const typingHandler = (e) => {
+    const { name, value } = e.target;
+    setToDo({
+      ...toDo,
+      [name]: value
+    })
+
+  }
+
   return (
     <div className="app">
       <div className="mainHeading">
-        <h1>ToDo List</h1>
+        <h1>My Todos</h1>
       </div>
-      <div className="subHeading">
-        <br />
-        <h2>Whoop, it's Wednesday 🌝 ☕ </h2>
-      </div>
-      <div className="input">
-        <input value={toDo} onChange={(e) => setToDo(e.target.value)} type="text" placeholder="🖊️ Add item..." />
-        <i onClick={() => setToDos([...toDos,
-           { id: Date.now(), text: toDo, status: false }])} className="fas fa-plus" ></i>
-      </div>
-      <div className="todos">
-        {toDos.map((obj) => {
 
-          return (<div className="todo">
-            <div className="left">
-              <input onChange={(e) => {
-                console.log(e.target.checked)
-                console.log(obj)
-                setToDos(toDos.filter(obj2=>{
-                  if(obj2.id===obj.id){
-                    obj2.status=e.target.checked
-                  }
-                  return obj2
-                }))
-              }}
-              value={obj.status} type="checkbox" name="" id="" />
-              <p>{obj.text}</p>
-            </div>
-            <div className="right">
-              <i className="fas fa-times"></i>
-            </div>
-          </div>)
-        })}
+      <div className='d-flex'>
+        <div className='form-control' style={{ marginInlineEnd: "45px" }}>
+          <label className='' style={{ color: "white" }}>Title</label>
+          <div className="input">
+            <input
+              value={toDo.nameForTodo}
+              onChange={typingHandler}
+              type="text"
+              name="nameForTodo"
+              placeholder="Add item..." />
+          </div>
+        </div>
+        <div className='form-control'>
+          <label className='' style={{ color: "white" }}>Description</label>
+          <div className="input">
+            <input
+              value={toDo.description}
+              onChange={typingHandler}
+              type="text"
+              name="description"
+              placeholder="Add description..." />
+          </div>
+        </div>
+        <i
+          onClick={() => insertData()}
+          className="fas fa-plus" ></i>
       </div>
+      {/* Array show */}
+      {console.log(allToDo, "allToDo")}
+
+      <div className='' style={{ color: "white" }}>
+        <p>Display got data</p>
+        {allToDo?.map((item, index) => item.nameForTodo)}
+      </div>
+      
+      <TimePickerFile/>
+
     </div>
   )
 }
